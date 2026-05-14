@@ -87,7 +87,7 @@
             <section class="tabs" aria-label="Settings tabs">
               <button class="tab">Preferences</button>
               <button class="tab">Roles &amp; Permissions</button>
-              <button class="tab active">Templates</button>
+              <button class="tab active">Report Templates</button>
               <button class="tab">Overtime Rules</button>
               <button class="tab">Regional Configurations</button>
             </section>
@@ -149,7 +149,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Maintenance</td>
+                    <td>Trespassing</td>
                     <td>Incident</td>
                     <td><span class="sev-badge sev-3">Sev 3</span></td>
                     <td class="actions-cell">
@@ -162,7 +162,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Compliance</td>
+                    <td>Fire Alarm</td>
                     <td>Incident</td>
                     <td><span class="sev-badge sev-1">Sev 1</span></td>
                     <td class="actions-cell">
@@ -175,48 +175,9 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Security</td>
+                    <td>Intruder Attack</td>
                     <td>Incident</td>
                     <td><span class="sev-badge sev-2">Sev 2</span></td>
-                    <td class="actions-cell">
-                      <div class="row-menu-wrapper">
-                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
-                        <div class="row-action-menu is-hidden">
-                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Operations</td>
-                    <td>Incident</td>
-                    <td><span class="sev-badge sev-3">Sev 3</span></td>
-                    <td class="actions-cell">
-                      <div class="row-menu-wrapper">
-                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
-                        <div class="row-action-menu is-hidden">
-                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Daily Checks</td>
-                    <td>Incident</td>
-                    <td><span class="sev-badge sev-5">Sev 5</span></td>
-                    <td class="actions-cell">
-                      <div class="row-menu-wrapper">
-                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
-                        <div class="row-action-menu is-hidden">
-                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Franchise Standards</td>
-                    <td>Incident</td>
-                    <td><span class="sev-badge sev-4">Sev 4</span></td>
                     <td class="actions-cell">
                       <div class="row-menu-wrapper">
                         <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
@@ -271,6 +232,16 @@
           </div>
 
           <div class="mui-field">
+            <label class="mui-label" for="report-type-input">Report Type</label>
+            <div class="mui-select-wrap">
+              <select id="report-type-input" class="mui-outlined-input mui-select">
+                <option value="incident-report" selected>Incident Report</option>
+              </select>
+              <span class="mui-icon mui-select-icon">expand_more</span>
+            </div>
+          </div>
+
+          <div class="mui-field">
             <label class="mui-label" for="priority-level-input">Priority Level</label>
             <div class="mui-select-wrap">
               <select id="priority-level-input" class="mui-outlined-input mui-select">
@@ -288,7 +259,12 @@
           <label class="rule-checkbox-row mui-checkbox-row">
             <input type="checkbox" class="mui-checkbox-input" />
             <span class="mui-checkbox-box"></span>
-            <span>Non-Dispatch Calls</span>
+            <span>Send report to client via email</span>
+          </label>
+          <label class="rule-checkbox-row mui-checkbox-row">
+            <input type="checkbox" class="mui-checkbox-input" />
+            <span class="mui-checkbox-box"></span>
+            <span>Send report to client with Daily Site Summary</span>
           </label>
         </div>
 
@@ -311,6 +287,7 @@
       const saveCategoryDrawerBtn = document.getElementById("save-category-drawer");
       const categoriesTableBody = document.querySelector("#categories-table tbody");
       const categoryTitleInput = document.getElementById("category-title-input");
+      const reportTypeInput = document.getElementById("report-type-input");
       const priorityLevelInput = document.getElementById("priority-level-input");
       let currentView = "templates";
 
@@ -386,16 +363,19 @@
 
         const priority = priorityLevelInput.value;
         const severity = getSeverityFromPriority(priority);
+        const reportTypeLabel =
+          reportTypeInput.options[reportTypeInput.selectedIndex].text;
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${title}</td>
-          <td>Incident</td>
+          <td>${reportTypeLabel}</td>
           <td><span class="sev-badge ${severity.className}">${severity.label}</span></td>
           ${createActionsCellMarkup()}
         `;
         categoriesTableBody.appendChild(row);
 
         categoryTitleInput.value = "";
+        reportTypeInput.value = "incident-report";
         priorityLevelInput.value = "3";
         closeCategoryDrawer();
       });
