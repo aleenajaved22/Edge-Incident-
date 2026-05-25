@@ -96,13 +96,14 @@
               <div class="toolbar-left">
                 <div class="toolbar-toggle" role="tablist" aria-label="Template view toggle">
                   <button class="toggle-tab active" role="tab" aria-selected="true" data-view="templates">Templates</button>
-                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="categories">Categories</button>
+                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="groups">Groups</button>
+                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="types">Type</button>
                 </div>
                 <label class="search-field" aria-label="Search">
                   <span class="mui-icon">search</span>
                   <input type="text" placeholder="Search" />
                 </label>
-                <button class="dropdown-btn">
+                <button id="franchise-filter-btn" class="dropdown-btn">
                   All Franchises <span class="mui-icon">expand_more</span>
                 </button>
               </div>
@@ -138,19 +139,48 @@
                   <tr><td>Year Completion</td><td>05/03/2017</td><td>OBX Form</td></tr>
                 </tbody>
               </table>
-              <table id="categories-table" class="is-hidden">
+              <table id="groups-table" class="is-hidden">
                 <thead>
                   <tr>
-                    <th>Category Name</th>
+                    <th>Group Name</th>
+                    <th>Types</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-group-name="Walmart">
+                    <td>Walmart</td>
+                    <td>
+                      <div class="type-badge-list">
+                        <span class="type-badge">Trespassing</span>
+                        <span class="type-badge">Intruder Alarm</span>
+                        <span class="type-badge">Fire Alarm</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr data-group-name="Milwaukee Tools">
+                    <td>Milwaukee Tools</td>
+                    <td>
+                      <div class="type-badge-list">
+                        <span class="type-badge">Trespassing</span>
+                        <span class="type-badge">Intruder Alarm</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table id="types-table" class="is-hidden">
+                <thead>
+                  <tr>
                     <th>Type</th>
+                    <th>Details</th>
                     <th>Priority</th>
                     <th class="actions-header"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr data-rules="Send report to client via email">
                     <td>Trespassing</td>
-                    <td>Incident</td>
+                    <td>Unauthorized person on site</td>
                     <td><span class="sev-badge sev-3">Sev 3</span></td>
                     <td class="actions-cell">
                       <div class="row-menu-wrapper">
@@ -161,9 +191,9 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Fire Alarm</td>
-                    <td>Incident</td>
+                  <tr data-rules="Send report to client via email||Send report to client with Daily Site Summary">
+                    <td>Intruder Alarm</td>
+                    <td>Alarm triggered due to intrusion activity</td>
                     <td><span class="sev-badge sev-1">Sev 1</span></td>
                     <td class="actions-cell">
                       <div class="row-menu-wrapper">
@@ -174,9 +204,9 @@
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Intruder Attack</td>
-                    <td>Incident</td>
+                  <tr data-rules="Send report to client with Daily Site Summary">
+                    <td>Fire Alarm</td>
+                    <td>Emergency fire alarm activation</td>
                     <td><span class="sev-badge sev-2">Sev 2</span></td>
                     <td class="actions-cell">
                       <div class="row-menu-wrapper">
@@ -206,10 +236,72 @@
         </main>
       </div>
     </div>
-    <div id="category-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
-      <aside id="category-drawer" class="category-drawer" aria-label="Add Category drawer">
+    <div id="group-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
+      <aside id="group-drawer" class="category-drawer" aria-label="Add Group drawer">
         <div class="drawer-header">
-          <h2>Add Category</h2>
+          <h2>Add Group</h2>
+          <button id="close-group-drawer" class="icon-close-btn" aria-label="Close drawer">
+            <span class="mui-icon">close</span>
+          </button>
+        </div>
+
+        <div class="drawer-body">
+          <div class="mui-field">
+            <label class="mui-label" for="group-name-input">Group Name</label>
+            <input id="group-name-input" class="mui-outlined-input" type="text" placeholder="Enter group name" />
+          </div>
+
+          <div class="mui-field">
+            <label class="mui-label" for="group-type-trigger">Select Type</label>
+            <div class="mui-select-wrap">
+              <button
+                id="group-type-trigger"
+                type="button"
+                class="multi-select-trigger"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <span id="group-type-value" class="multi-select-value">
+                  <span class="multi-select-chip-list">
+                    <span class="multi-select-chip">Trespassing</span>
+                  </span>
+                </span>
+                <span class="mui-icon mui-select-icon">expand_more</span>
+              </button>
+              <div id="group-type-menu" class="multi-select-menu is-hidden" role="listbox" aria-multiselectable="true">
+                <div id="group-type-list" class="multi-select-list" role="group" aria-label="Select Type">
+                  <label class="multi-select-option mui-checkbox-row">
+                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Trespassing" checked />
+                    <span class="mui-checkbox-box"></span>
+                    <span>Trespassing</span>
+                  </label>
+                  <label class="multi-select-option mui-checkbox-row">
+                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Intruder Alarm" />
+                    <span class="mui-checkbox-box"></span>
+                    <span>Intruder Alarm</span>
+                  </label>
+                  <label class="multi-select-option mui-checkbox-row">
+                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Fire Alarm" />
+                    <span class="mui-checkbox-box"></span>
+                    <span>Fire Alarm</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-footer">
+          <button id="cancel-group-drawer" class="btn btn-secondary">Cancel</button>
+          <button id="save-group-drawer" class="btn btn-primary">Save</button>
+        </div>
+      </aside>
+    </div>
+
+    <div id="category-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
+      <aside id="category-drawer" class="category-drawer" aria-label="Add Type drawer">
+        <div class="drawer-header">
+          <h2>Add Type</h2>
           <button id="close-category-drawer" class="icon-close-btn" aria-label="Close drawer">
             <span class="mui-icon">close</span>
           </button>
@@ -217,8 +309,8 @@
 
         <div class="drawer-body">
           <div class="mui-field">
-            <label class="mui-label" for="category-title-input">Category Title</label>
-            <input id="category-title-input" class="mui-outlined-input" type="text" placeholder="Enter category title" />
+            <label class="mui-label" for="category-title-input">Type</label>
+            <input id="category-title-input" class="mui-outlined-input" type="text" placeholder="Enter type" />
           </div>
 
           <div class="mui-field">
@@ -229,16 +321,6 @@
               rows="5"
               placeholder="Add details"
             ></textarea>
-          </div>
-
-          <div class="mui-field">
-            <label class="mui-label" for="report-type-input">Report Type</label>
-            <div class="mui-select-wrap">
-              <select id="report-type-input" class="mui-outlined-input mui-select">
-                <option value="incident-report" selected>Incident Report</option>
-              </select>
-              <span class="mui-icon mui-select-icon">expand_more</span>
-            </div>
           </div>
 
           <div class="mui-field">
@@ -274,22 +356,98 @@
         </div>
       </aside>
     </div>
+    <div id="type-detail-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
+      <aside id="type-detail-drawer" class="category-drawer" aria-label="Type details drawer">
+        <div class="drawer-header">
+          <h2>Type Details</h2>
+          <button id="close-type-detail-drawer" class="icon-close-btn" aria-label="Close drawer">
+            <span class="mui-icon">close</span>
+          </button>
+        </div>
+
+        <div class="drawer-body">
+          <div class="mui-field">
+            <label class="mui-label">Type</label>
+            <div id="type-detail-name" class="detail-display" aria-readonly="true">-</div>
+          </div>
+
+          <div class="mui-field">
+            <label class="mui-label">Details</label>
+            <div id="type-detail-description" class="detail-display detail-display-multiline" aria-readonly="true">-</div>
+          </div>
+
+          <div class="mui-field">
+            <label class="mui-label">Priority Level</label>
+            <div id="type-detail-priority" class="detail-display detail-display-inline" aria-readonly="true"></div>
+          </div>
+
+          <div class="mui-field">
+            <label class="mui-label">Rules</label>
+            <div id="type-detail-rules" class="detail-rule-list" aria-readonly="true"></div>
+          </div>
+        </div>
+
+        <div class="drawer-footer">
+          <button id="close-type-detail-footer" class="btn btn-secondary">Close</button>
+        </div>
+      </aside>
+    </div>
     <script>
       const toggleTabs = document.querySelectorAll(".toggle-tab");
       const templatesTable = document.getElementById("templates-table");
-      const categoriesTable = document.getElementById("categories-table");
+      const groupsTable = document.getElementById("groups-table");
+      const typesTable = document.getElementById("types-table");
       const primaryCta = document.getElementById("primary-cta");
       const primaryCtaLabel = document.getElementById("primary-cta-label");
+      const franchiseFilterBtn = document.getElementById("franchise-filter-btn");
+      const groupDrawerOverlay = document.getElementById("group-drawer-overlay");
+      const groupDrawer = document.getElementById("group-drawer");
+      const closeGroupDrawerBtn = document.getElementById("close-group-drawer");
+      const cancelGroupDrawerBtn = document.getElementById("cancel-group-drawer");
+      const saveGroupDrawerBtn = document.getElementById("save-group-drawer");
+      const groupNameInput = document.getElementById("group-name-input");
+      const groupTypeTrigger = document.getElementById("group-type-trigger");
+      const groupTypeValue = document.getElementById("group-type-value");
+      const groupTypeMenu = document.getElementById("group-type-menu");
+      const groupTypeList = document.getElementById("group-type-list");
       const categoryDrawerOverlay = document.getElementById("category-drawer-overlay");
       const categoryDrawer = document.getElementById("category-drawer");
       const closeCategoryDrawerBtn = document.getElementById("close-category-drawer");
       const cancelCategoryDrawerBtn = document.getElementById("cancel-category-drawer");
       const saveCategoryDrawerBtn = document.getElementById("save-category-drawer");
-      const categoriesTableBody = document.querySelector("#categories-table tbody");
-      const categoryTitleInput = document.getElementById("category-title-input");
-      const reportTypeInput = document.getElementById("report-type-input");
+      const typeDetailDrawerOverlay = document.getElementById("type-detail-drawer-overlay");
+      const typeDetailDrawer = document.getElementById("type-detail-drawer");
+      const closeTypeDetailDrawerBtn = document.getElementById("close-type-detail-drawer");
+      const closeTypeDetailFooterBtn = document.getElementById("close-type-detail-footer");
+      const typeDetailName = document.getElementById("type-detail-name");
+      const typeDetailDescription = document.getElementById("type-detail-description");
+      const typeDetailPriority = document.getElementById("type-detail-priority");
+      const typeDetailRules = document.getElementById("type-detail-rules");
+      const groupsTableBody = document.querySelector("#groups-table tbody");
+      const typesTableBody = document.querySelector("#types-table tbody");
+      const typeTitleInput = document.getElementById("category-title-input");
+      const typeDetailsInput = document.getElementById("category-details-input");
       const priorityLevelInput = document.getElementById("priority-level-input");
+      const typeRuleInputs = Array.from(
+        categoryDrawer.querySelectorAll(".rule-checkbox-row .mui-checkbox-input"),
+      );
       let currentView = "templates";
+
+      function openGroupDrawer() {
+        groupDrawerOverlay.classList.remove("is-hidden");
+        groupDrawerOverlay.setAttribute("aria-hidden", "false");
+      }
+
+      function closeGroupDrawer() {
+        groupDrawerOverlay.classList.add("is-hidden");
+        groupDrawerOverlay.setAttribute("aria-hidden", "true");
+        closeGroupTypeMenu();
+      }
+
+      function closeGroupTypeMenu() {
+        groupTypeMenu.classList.add("is-hidden");
+        groupTypeTrigger.setAttribute("aria-expanded", "false");
+      }
 
       function openCategoryDrawer() {
         categoryDrawerOverlay.classList.remove("is-hidden");
@@ -301,9 +459,20 @@
         categoryDrawerOverlay.setAttribute("aria-hidden", "true");
       }
 
+      function openTypeDetailDrawer() {
+        typeDetailDrawerOverlay.classList.remove("is-hidden");
+        typeDetailDrawerOverlay.setAttribute("aria-hidden", "false");
+      }
+
+      function closeTypeDetailDrawer() {
+        typeDetailDrawerOverlay.classList.add("is-hidden");
+        typeDetailDrawerOverlay.setAttribute("aria-hidden", "true");
+      }
+
       function setView(view) {
         currentView = view;
-        const showCategories = view === "categories";
+        const showGroups = view === "groups";
+        const showTypes = view === "types";
 
         toggleTabs.forEach((tab) => {
           const isActive = tab.dataset.view === view;
@@ -311,9 +480,15 @@
           tab.setAttribute("aria-selected", String(isActive));
         });
 
-        templatesTable.classList.toggle("is-hidden", showCategories);
-        categoriesTable.classList.toggle("is-hidden", !showCategories);
-        primaryCtaLabel.textContent = showCategories ? "Add Category" : "Add Report Template";
+        templatesTable.classList.toggle("is-hidden", view !== "templates");
+        groupsTable.classList.toggle("is-hidden", !showGroups);
+        typesTable.classList.toggle("is-hidden", !showTypes);
+        franchiseFilterBtn.classList.toggle("is-hidden", showGroups || showTypes);
+        primaryCtaLabel.textContent = showGroups
+          ? "Add Group"
+          : showTypes
+            ? "Add Type"
+            : "Add Report Template";
       }
 
       toggleTabs.forEach((tab) => {
@@ -323,9 +498,24 @@
       primaryCta.addEventListener("click", () => {
         if (currentView === "templates") {
           window.location.href = "./edit-report.html";
-        } else if (currentView === "categories") {
+        } else if (currentView === "groups") {
+          openGroupDrawer();
+        } else if (currentView === "types") {
           openCategoryDrawer();
         }
+      });
+
+      closeGroupDrawerBtn.addEventListener("click", closeGroupDrawer);
+      cancelGroupDrawerBtn.addEventListener("click", closeGroupDrawer);
+      groupDrawerOverlay.addEventListener("click", (event) => {
+        if (!groupDrawer.contains(event.target)) {
+          closeGroupDrawer();
+        }
+      });
+      groupTypeTrigger.addEventListener("click", () => {
+        const willOpen = groupTypeMenu.classList.contains("is-hidden");
+        groupTypeMenu.classList.toggle("is-hidden", !willOpen);
+        groupTypeTrigger.setAttribute("aria-expanded", String(willOpen));
       });
 
       closeCategoryDrawerBtn.addEventListener("click", closeCategoryDrawer);
@@ -335,10 +525,150 @@
           closeCategoryDrawer();
         }
       });
+      closeTypeDetailDrawerBtn.addEventListener("click", closeTypeDetailDrawer);
+      closeTypeDetailFooterBtn.addEventListener("click", closeTypeDetailDrawer);
+      typeDetailDrawerOverlay.addEventListener("click", (event) => {
+        if (!typeDetailDrawer.contains(event.target)) {
+          closeTypeDetailDrawer();
+        }
+      });
 
       function getSeverityFromPriority(priority) {
         const sev = Number(priority) || 3;
         return { label: `Sev ${sev}`, className: `sev-${sev}` };
+      }
+
+      function escapeHtml(value) {
+        return value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function createTypeBadgeMarkup(typeLabel) {
+        return `<span class="type-badge">${escapeHtml(typeLabel)}</span>`;
+      }
+
+      function getSelectedRuleLabels() {
+        return typeRuleInputs
+          .filter((input) => input.checked)
+          .map((input) => input.parentElement.querySelector("span:last-child").textContent.trim());
+      }
+
+      function createDetailRuleMarkup(ruleLabel) {
+        return `
+          <div class="detail-rule-item">
+            <span>${escapeHtml(ruleLabel)}</span>
+          </div>
+        `;
+      }
+
+      function openTypeDetailsForRow(row) {
+        const typeName = row.cells[0]?.textContent.trim() || "-";
+        const details = row.cells[1]?.textContent.trim() || "No details added";
+        const priorityMarkup = row.cells[2]?.innerHTML || "-";
+        const rules = (row.dataset.rules || "")
+          .split("||")
+          .map((rule) => rule.trim())
+          .filter(Boolean);
+
+        typeDetailName.textContent = typeName;
+        typeDetailDescription.textContent = details;
+        typeDetailPriority.innerHTML = priorityMarkup;
+        typeDetailRules.innerHTML = rules.length
+          ? rules.map((rule) => createDetailRuleMarkup(rule)).join("")
+          : '<div class="detail-empty">No rules associated</div>';
+        openTypeDetailDrawer();
+      }
+
+      function getTypeLabels() {
+        return Array.from(typesTableBody.querySelectorAll("tr td:first-child"))
+          .map((cell) => cell.textContent.trim())
+          .filter(Boolean);
+      }
+
+      function getSelectedGroupTypes() {
+        return Array.from(groupTypeList.querySelectorAll(".group-type-checkbox:checked")).map(
+          (input) => input.value,
+        );
+      }
+
+      function syncGroupTypeTrigger() {
+        const selectedTypes = getSelectedGroupTypes();
+        if (!selectedTypes.length) {
+          groupTypeValue.innerHTML = '<span class="multi-select-placeholder">Select type</span>';
+          return;
+        }
+
+        groupTypeValue.innerHTML = `
+          <span class="multi-select-chip-list">
+            ${selectedTypes.map((typeLabel) => `<span class="multi-select-chip">${escapeHtml(typeLabel)}</span>`).join("")}
+          </span>
+        `;
+      }
+
+      function populateGroupTypeOptions(preferredTypes) {
+        const typeLabels = getTypeLabels();
+        const selectedTypes = Array.isArray(preferredTypes)
+          ? preferredTypes
+          : preferredTypes
+            ? [preferredTypes]
+            : [];
+        groupTypeList.replaceChildren();
+
+        typeLabels.forEach((typeLabel, index) => {
+          const optionLabel = document.createElement("label");
+          optionLabel.className = "multi-select-option mui-checkbox-row";
+
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.className = "mui-checkbox-input group-type-checkbox";
+          input.value = typeLabel;
+          input.checked = selectedTypes.length ? selectedTypes.includes(typeLabel) : index === 0;
+          input.addEventListener("change", syncGroupTypeTrigger);
+
+          const checkboxBox = document.createElement("span");
+          checkboxBox.className = "mui-checkbox-box";
+
+          const text = document.createElement("span");
+          text.textContent = typeLabel;
+
+          optionLabel.append(input, checkboxBox, text);
+          groupTypeList.appendChild(optionLabel);
+        });
+
+        syncGroupTypeTrigger();
+      }
+
+      function upsertGroupListing(groupLabel, typeLabel) {
+        const existingRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
+          (row) => row.dataset.groupName === groupLabel,
+        );
+
+        if (existingRow) {
+          const badgeList = existingRow.querySelector(".type-badge-list");
+          const existingType = Array.from(badgeList.querySelectorAll(".type-badge")).some(
+            (badge) => badge.textContent.trim().toLowerCase() === typeLabel.toLowerCase(),
+          );
+          if (!existingType) {
+            badgeList.insertAdjacentHTML("beforeend", createTypeBadgeMarkup(typeLabel));
+          }
+          return;
+        }
+
+        const row = document.createElement("tr");
+        row.dataset.groupName = groupLabel;
+        row.innerHTML = `
+          <td>${escapeHtml(groupLabel)}</td>
+          <td>
+            <div class="type-badge-list">
+              ${createTypeBadgeMarkup(typeLabel)}
+            </div>
+          </td>
+        `;
+        groupsTableBody.appendChild(row);
       }
 
       function createActionsCellMarkup() {
@@ -354,30 +684,71 @@
         `;
       }
 
-      saveCategoryDrawerBtn.addEventListener("click", () => {
-        const title = categoryTitleInput.value.trim();
-        if (!title) {
-          categoryTitleInput.focus();
+      saveGroupDrawerBtn.addEventListener("click", () => {
+        const groupName = groupNameInput.value.trim();
+        if (!groupName) {
+          groupNameInput.focus();
           return;
         }
 
+        const selectedTypeLabels = getSelectedGroupTypes();
+        if (!selectedTypeLabels.length) {
+          groupTypeTrigger.focus();
+          return;
+        }
+
+        selectedTypeLabels.forEach((typeLabel) => {
+          upsertGroupListing(groupName, typeLabel);
+        });
+        groupNameInput.value = "";
+        populateGroupTypeOptions();
+        closeGroupTypeMenu();
+        closeGroupDrawer();
+      });
+
+      saveCategoryDrawerBtn.addEventListener("click", () => {
+        const title = typeTitleInput.value.trim();
+        if (!title) {
+          typeTitleInput.focus();
+          return;
+        }
+
+        const details = typeDetailsInput.value.trim() || "No details added";
         const priority = priorityLevelInput.value;
         const severity = getSeverityFromPriority(priority);
-        const reportTypeLabel =
-          reportTypeInput.options[reportTypeInput.selectedIndex].text;
+        const selectedRules = getSelectedRuleLabels();
         const row = document.createElement("tr");
+        row.dataset.rules = selectedRules.join("||");
         row.innerHTML = `
-          <td>${title}</td>
-          <td>${reportTypeLabel}</td>
+          <td>${escapeHtml(title)}</td>
+          <td>${escapeHtml(details)}</td>
           <td><span class="sev-badge ${severity.className}">${severity.label}</span></td>
           ${createActionsCellMarkup()}
         `;
-        categoriesTableBody.appendChild(row);
+        typesTableBody.appendChild(row);
+        populateGroupTypeOptions(title);
 
-        categoryTitleInput.value = "";
-        reportTypeInput.value = "incident-report";
+        typeTitleInput.value = "";
+        typeDetailsInput.value = "";
         priorityLevelInput.value = "3";
+        typeRuleInputs.forEach((input) => {
+          input.checked = false;
+        });
         closeCategoryDrawer();
+      });
+
+      populateGroupTypeOptions();
+
+      typesTableBody.addEventListener("click", (event) => {
+        if (event.target.closest(".row-menu-wrapper")) {
+          return;
+        }
+
+        const row = event.target.closest("tr");
+        if (row) {
+          closeAllRowMenus();
+          openTypeDetailsForRow(row);
+        }
       });
 
       function closeAllRowMenus() {
@@ -393,6 +764,21 @@
           closeAllRowMenus();
           if (!isOpen) {
             menu.classList.remove("is-hidden");
+          }
+          return;
+        }
+
+        if (!groupTypeTrigger.contains(event.target) && !groupTypeMenu.contains(event.target)) {
+          closeGroupTypeMenu();
+        }
+
+        const rowActionItem = event.target.closest(".row-action-item");
+        if (rowActionItem) {
+          event.stopPropagation();
+          const row = rowActionItem.closest("tr");
+          if (row && row.closest("#types-table")) {
+            closeAllRowMenus();
+            openTypeDetailsForRow(row);
           }
           return;
         }
