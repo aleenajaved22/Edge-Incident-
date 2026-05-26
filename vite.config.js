@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         "edit-report": resolve(__dirname, "edit-report.html"),
+        "fo-view": resolve(__dirname, "fo-view.html"),
       },
     },
   },

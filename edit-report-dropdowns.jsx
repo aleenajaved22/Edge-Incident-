@@ -1,14 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Box, FormControl, MenuItem, Select } from "@mui/material";
+import { Box, Checkbox, FormControl, MenuItem, Select } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const reportTypeOptions = ["Incident Report", "Activity Report"];
-const reportTypesWithGroupAndType = new Set(["Incident Report", "Activity Report"]);
-const typeOptionsByGroup = {
-  Walmart: ["Trespassing", "Intruder Alarm", "Fire Alarm"],
-  "Milwaukee Tools": ["Trespassing", "Intruder Alarm"],
-};
+const reportTypesWithGroup = new Set(["Incident Report", "Activity Report"]);
 
 const theme = createTheme({
   palette: {
@@ -61,6 +57,16 @@ const menuItemSx = {
   padding: "10px 14px",
 };
 
+const checkboxSx = {
+  marginLeft: "16px",
+  padding: 0,
+  color: "#aeaeb2",
+  flexShrink: 0,
+  "&.Mui-checked": {
+    color: "#146dff",
+  },
+};
+
 function DropdownField({ label, value, onChange, options }) {
   return (
     <Box className="report-type-dropdown">
@@ -87,19 +93,27 @@ function DropdownField({ label, value, onChange, options }) {
   );
 }
 
-function EditReportDropdowns() {
-  const groupOptions = useMemo(() => Object.keys(typeOptionsByGroup), []);
-  const [reportType, setReportType] = useState("Incident Report");
-  const [group, setGroup] = useState("Milwaukee Tools");
-  const availableTypes = useMemo(() => typeOptionsByGroup[group] ?? [], [group]);
-  const [type, setType] = useState((typeOptionsByGroup["Milwaukee Tools"] ?? [])[0] ?? "");
-  const showDependentDropdowns = reportTypesWithGroupAndType.has(reportType);
+function ToggleField({ label, description, checked, onChange }) {
+  return (
+    <Box className="report-setting-card">
+      <div className="report-setting-copy">
+        <span className="field-label report-setting-label">{label}</span>
+        <p className="report-setting-description">{description}</p>
+      </div>
+      <Checkbox
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        inputProps={{ "aria-label": label }}
+        sx={checkboxSx}
+      />
+    </Box>
+  );
+}
 
-  useEffect(() => {
-    if (!availableTypes.includes(type)) {
-      setType(availableTypes[0] ?? "");
-    }
-  }, [availableTypes, type]);
+function EditReportDropdowns() {
+  const [reportType, setReportType] = useState("Incident Report");
+  const [groupEnabled, setGroupEnabled] = useState(true);
+  const showDependentDropdowns = reportTypesWithGroup.has(reportType);
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,10 +124,12 @@ function EditReportDropdowns() {
         options={reportTypeOptions}
       />
       {showDependentDropdowns && (
-        <>
-          <DropdownField label="Group" value={group} onChange={setGroup} options={groupOptions} />
-          <DropdownField label="Type" value={type} onChange={setType} options={availableTypes} />
-        </>
+        <ToggleField
+          label="Group"
+          description="Enable group-based reporting for this template"
+          checked={groupEnabled}
+          onChange={setGroupEnabled}
+        />
       )}
     </ThemeProvider>
   );

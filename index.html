@@ -23,41 +23,45 @@
           <div class="sidebar-stack">
             <img
               class="sidebar-logo"
-              src="https://www.figma.com/api/mcp/asset/42f6326d-51ba-4a2d-8521-24c13756fd8d"
+              src="https://www.figma.com/api/mcp/asset/137bd47f-a0c7-4d14-b8d9-b80ce1c24cf1"
               alt="OPS logo"
             />
             <button class="ops-toggle" aria-label="Switch workspace">
               <span>OPS</span>
-              <span class="ops-arrows">
-                <span class="mui-icon">keyboard_arrow_up</span>
-                <span class="mui-icon">keyboard_arrow_down</span>
+              <span class="ops-arrows" aria-hidden="true">
+                <img class="ops-arrow-icon" src="https://www.figma.com/api/mcp/asset/d3dc8ae2-22a2-410c-8185-59f5f35eed1b" alt="" />
+                <img class="ops-arrow-icon is-down" src="https://www.figma.com/api/mcp/asset/d3dc8ae2-22a2-410c-8185-59f5f35eed1b" alt="" />
               </span>
             </button>
 
             <nav class="sidebar-nav" aria-label="Main navigation">
               <button class="nav-item" aria-label="Dashboard">
-                <span class="mui-icon">home</span>
+                <img class="nav-icon nav-icon-dashboard" src="https://www.figma.com/api/mcp/asset/ec44bdc8-29e9-4ab4-b655-06355e0eca28" alt="" />
               </button>
               <button class="nav-item" aria-label="Signal map">
-                <span class="mui-icon">public</span>
+                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/6b235b1f-697a-40a9-8369-917e7e7c8b64" alt="" />
               </button>
               <button class="nav-item" aria-label="Franchises">
-                <span class="mui-icon">layers</span>
+                <span class="franchises-icon" aria-hidden="true">
+                  <span class="franchises-line stroke-top"></span>
+                  <span class="franchises-line stroke-middle"></span>
+                  <span class="franchises-line stroke-bottom"></span>
+                </span>
               </button>
               <button class="nav-item" aria-label="Dispatch">
-                <span class="mui-icon">notifications</span>
+                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/f73cb3bb-10b9-4583-847f-e0843ac70024" alt="" />
               </button>
               <button class="nav-item" aria-label="Users">
-                <span class="mui-icon">person</span>
+                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/a46c8cc9-78ef-448f-bd3f-5c2975567c48" alt="" />
               </button>
               <button class="nav-item active" aria-label="Settings">
-                <span class="mui-icon">settings</span>
+                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/0b486686-2480-4d68-912f-68243e52279e" alt="" />
               </button>
             </nav>
           </div>
         </div>
         <button class="collapse-btn" aria-label="Collapse sidebar">
-          <span class="mui-icon">last_page</span>
+          <img class="collapse-icon" src="https://www.figma.com/api/mcp/asset/d3cc0618-bef9-40fe-a937-880edbac4c5e" alt="" />
         </button>
       </aside>
 
@@ -96,8 +100,8 @@
               <div class="toolbar-left">
                 <div class="toolbar-toggle" role="tablist" aria-label="Template view toggle">
                   <button class="toggle-tab active" role="tab" aria-selected="true" data-view="templates">Templates</button>
-                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="groups">Groups</button>
                   <button class="toggle-tab" role="tab" aria-selected="false" data-view="types">Type</button>
+                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="groups">Groups</button>
                 </div>
                 <label class="search-field" aria-label="Search">
                   <span class="mui-icon">search</span>
@@ -108,9 +112,6 @@
                 </button>
               </div>
               <div class="toolbar-right">
-                <button class="btn btn-secondary">
-                  <span class="mui-icon">cloud_download</span> Export
-                </button>
                 <button class="btn btn-primary" id="primary-cta">
                   <span class="mui-icon">add</span>
                   <span id="primary-cta-label">Add Report Template</span>
@@ -217,6 +218,19 @@
                       </div>
                     </td>
                   </tr>
+                  <tr data-rules="Send report to client with Daily Site Summary">
+                    <td>Daily Activity</td>
+                    <td>Routine site activity update</td>
+                    <td><span class="sev-badge sev-5">Sev 5</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <footer class="pagination">
@@ -236,6 +250,7 @@
         </main>
       </div>
     </div>
+    <button class="floating-ghost-btn" type="button">FO View</button>
     <div id="group-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
       <aside id="group-drawer" class="category-drawer" aria-label="Add Group drawer">
         <div class="drawer-header">
@@ -423,6 +438,7 @@
       const typeDetailDescription = document.getElementById("type-detail-description");
       const typeDetailPriority = document.getElementById("type-detail-priority");
       const typeDetailRules = document.getElementById("type-detail-rules");
+      const floatingFoViewBtn = document.querySelector(".floating-ghost-btn");
       const groupsTableBody = document.querySelector("#groups-table tbody");
       const typesTableBody = document.querySelector("#types-table tbody");
       const typeTitleInput = document.getElementById("category-title-input");
@@ -493,6 +509,10 @@
 
       toggleTabs.forEach((tab) => {
         tab.addEventListener("click", () => setView(tab.dataset.view));
+      });
+
+      floatingFoViewBtn?.addEventListener("click", () => {
+        window.location.href = "./fo-view.html";
       });
 
       primaryCta.addEventListener("click", () => {
