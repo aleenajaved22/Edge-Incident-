@@ -21,25 +21,21 @@
       <aside class="sidebar">
         <div class="sidebar-rail">
           <div class="sidebar-stack">
-            <img
-              class="sidebar-logo"
-              src="https://www.figma.com/api/mcp/asset/137bd47f-a0c7-4d14-b8d9-b80ce1c24cf1"
-              alt="OPS logo"
-            />
+            <div class="sidebar-logo-mark" aria-label="OPS logo">O</div>
             <button class="ops-toggle" aria-label="Switch workspace">
               <span>OPS</span>
               <span class="ops-arrows" aria-hidden="true">
-                <img class="ops-arrow-icon" src="https://www.figma.com/api/mcp/asset/d3dc8ae2-22a2-410c-8185-59f5f35eed1b" alt="" />
-                <img class="ops-arrow-icon is-down" src="https://www.figma.com/api/mcp/asset/d3dc8ae2-22a2-410c-8185-59f5f35eed1b" alt="" />
+                <span class="mui-icon ops-arrow-icon">keyboard_arrow_up</span>
+                <span class="mui-icon ops-arrow-icon is-down">keyboard_arrow_down</span>
               </span>
             </button>
 
             <nav class="sidebar-nav" aria-label="Main navigation">
               <button class="nav-item" aria-label="Dashboard">
-                <img class="nav-icon nav-icon-dashboard" src="https://www.figma.com/api/mcp/asset/ec44bdc8-29e9-4ab4-b655-06355e0eca28" alt="" />
+                <span class="mui-icon nav-symbol nav-symbol-small">home</span>
               </button>
               <button class="nav-item" aria-label="Signal map">
-                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/6b235b1f-697a-40a9-8369-917e7e7c8b64" alt="" />
+                <span class="mui-icon nav-symbol">public</span>
               </button>
               <button class="nav-item" aria-label="Franchises">
                 <span class="franchises-icon" aria-hidden="true">
@@ -49,19 +45,19 @@
                 </span>
               </button>
               <button class="nav-item" aria-label="Dispatch">
-                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/f73cb3bb-10b9-4583-847f-e0843ac70024" alt="" />
+                <span class="mui-icon nav-symbol">notifications</span>
               </button>
               <button class="nav-item" aria-label="Users">
-                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/a46c8cc9-78ef-448f-bd3f-5c2975567c48" alt="" />
+                <span class="mui-icon nav-symbol">person</span>
               </button>
               <button class="nav-item active" aria-label="Settings">
-                <img class="nav-icon" src="https://www.figma.com/api/mcp/asset/0b486686-2480-4d68-912f-68243e52279e" alt="" />
+                <span class="mui-icon nav-symbol">settings</span>
               </button>
             </nav>
           </div>
         </div>
         <button class="collapse-btn" aria-label="Collapse sidebar">
-          <img class="collapse-icon" src="https://www.figma.com/api/mcp/asset/d3cc0618-bef9-40fe-a937-880edbac4c5e" alt="" />
+          <span class="mui-icon">last_page</span>
         </button>
       </aside>
 
@@ -99,9 +95,9 @@
             <section class="toolbar">
               <div class="toolbar-left">
                 <div class="toolbar-toggle" role="tablist" aria-label="Template view toggle">
-                  <button class="toggle-tab active" role="tab" aria-selected="true" data-view="templates">Templates</button>
-                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="types">Type</button>
-                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="groups">Groups</button>
+                  <button class="toggle-tab active" role="tab" aria-selected="true" data-view="templates">Template</button>
+                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="types">Category</button>
+                  <button class="toggle-tab" role="tab" aria-selected="false" data-view="groups">Group</button>
                 </div>
                 <label class="search-field" aria-label="Search">
                   <span class="mui-icon">search</span>
@@ -116,6 +112,12 @@
                   <span class="mui-icon">add</span>
                   <span id="primary-cta-label">Add Report Template</span>
                 </button>
+                <div id="add-group-cta-wrap" class="toolbar-add-group is-hidden">
+                  <button id="add-group-cta" class="btn btn-primary" type="button">
+                    <span class="mui-icon">add</span>
+                    <span>Add Group</span>
+                  </button>
+                </div>
               </div>
             </section>
 
@@ -144,26 +146,38 @@
                 <thead>
                   <tr>
                     <th>Group Name</th>
-                    <th>Types</th>
+                    <th>Categories</th>
+                    <th>Created by</th>
+                    <th class="actions-header"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-group-name="Walmart">
+                  <tr
+                    data-group-name="Walmart"
+                    data-categories="Trespassing||Intruder Alarm||Fire Alarm||Daily Activity||Phone Check||Gate Access||Parking Lot||Camera Check||Lobby Sweep||Loading Dock"
+                  >
                     <td>Walmart</td>
-                    <td>
-                      <div class="type-badge-list">
-                        <span class="type-badge">Trespassing</span>
-                        <span class="type-badge">Intruder Alarm</span>
-                        <span class="type-badge">Fire Alarm</span>
+                    <td class="group-categories-cell"></td>
+                    <td>Aleena</td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-group-name="Milwaukee Tools">
-                    <td>Milwaukee Tools</td>
-                    <td>
-                      <div class="type-badge-list">
-                        <span class="type-badge">Trespassing</span>
-                        <span class="type-badge">Intruder Alarm</span>
+                  <tr data-group-name="Mega Saver" data-categories="Trespassing||Daily Activity">
+                    <td>Mega Saver</td>
+                    <td class="group-categories-cell"></td>
+                    <td>John Agar</td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -172,14 +186,14 @@
               <table id="types-table" class="is-hidden">
                 <thead>
                   <tr>
-                    <th>Type</th>
+                    <th>Category Name</th>
                     <th>Details</th>
                     <th>Priority</th>
                     <th class="actions-header"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-rules="Send report to client via email">
+                  <tr>
                     <td>Trespassing</td>
                     <td>Unauthorized person on site</td>
                     <td><span class="sev-badge sev-3">Sev 3</span></td>
@@ -192,7 +206,7 @@
                       </div>
                     </td>
                   </tr>
-                  <tr data-rules="Send report to client via email||Send report to client with Daily Site Summary">
+                  <tr>
                     <td>Intruder Alarm</td>
                     <td>Alarm triggered due to intrusion activity</td>
                     <td><span class="sev-badge sev-1">Sev 1</span></td>
@@ -205,7 +219,7 @@
                       </div>
                     </td>
                   </tr>
-                  <tr data-rules="Send report to client with Daily Site Summary">
+                  <tr>
                     <td>Fire Alarm</td>
                     <td>Emergency fire alarm activation</td>
                     <td><span class="sev-badge sev-2">Sev 2</span></td>
@@ -218,10 +232,88 @@
                       </div>
                     </td>
                   </tr>
-                  <tr data-rules="Send report to client with Daily Site Summary">
+                  <tr>
                     <td>Daily Activity</td>
                     <td>Routine site activity update</td>
                     <td><span class="sev-badge sev-5">Sev 5</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Phone Check</td>
+                    <td>Scheduled phone line verification</td>
+                    <td><span class="sev-badge sev-4">Sev 4</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Gate Access</td>
+                    <td>Gate entry and exit activity</td>
+                    <td><span class="sev-badge sev-3">Sev 3</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Parking Lot</td>
+                    <td>Parking lot patrol and status check</td>
+                    <td><span class="sev-badge sev-4">Sev 4</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Camera Check</td>
+                    <td>Camera feed and recording verification</td>
+                    <td><span class="sev-badge sev-2">Sev 2</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Lobby Sweep</td>
+                    <td>Lobby area sweep and inspection</td>
+                    <td><span class="sev-badge sev-5">Sev 5</span></td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Loading Dock</td>
+                    <td>Loading dock security check</td>
+                    <td><span class="sev-badge sev-3">Sev 3</span></td>
                     <td class="actions-cell">
                       <div class="row-menu-wrapper">
                         <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
@@ -267,40 +359,42 @@
           </div>
 
           <div class="mui-field">
-            <label class="mui-label" for="group-type-trigger">Select Type</label>
-            <div class="mui-select-wrap">
-              <button
-                id="group-type-trigger"
-                type="button"
-                class="multi-select-trigger"
-                aria-haspopup="listbox"
+            <label class="mui-label" for="group-category-search">Categories</label>
+            <div class="mui-select-wrap multi-select-combobox">
+              <div
+                id="group-category-trigger"
+                class="multi-select-trigger multi-select-combobox-trigger"
                 aria-expanded="false"
               >
-                <span id="group-type-value" class="multi-select-value">
-                  <span class="multi-select-chip-list">
-                    <span class="multi-select-chip">Trespassing</span>
-                  </span>
-                </span>
+                <div class="multi-select-combobox-content">
+                  <span id="group-category-value" class="multi-select-value"></span>
+                  <input
+                    id="group-category-search"
+                    class="multi-select-search-input"
+                    type="text"
+                    placeholder="Select category"
+                    autocomplete="off"
+                    aria-autocomplete="list"
+                    aria-controls="group-category-menu"
+                    aria-expanded="false"
+                  />
+                </div>
                 <span class="mui-icon mui-select-icon">expand_more</span>
-              </button>
-              <div id="group-type-menu" class="multi-select-menu is-hidden" role="listbox" aria-multiselectable="true">
-                <div id="group-type-list" class="multi-select-list" role="group" aria-label="Select Type">
-                  <label class="multi-select-option mui-checkbox-row">
-                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Trespassing" checked />
+              </div>
+              <div
+                id="group-category-menu"
+                class="multi-select-menu is-hidden"
+                role="listbox"
+                aria-multiselectable="true"
+              >
+                <div class="multi-select-toolbar">
+                  <label class="multi-select-option mui-checkbox-row multi-select-all-option">
+                    <input type="checkbox" id="group-category-select-all" class="mui-checkbox-input" />
                     <span class="mui-checkbox-box"></span>
-                    <span>Trespassing</span>
-                  </label>
-                  <label class="multi-select-option mui-checkbox-row">
-                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Intruder Alarm" />
-                    <span class="mui-checkbox-box"></span>
-                    <span>Intruder Alarm</span>
-                  </label>
-                  <label class="multi-select-option mui-checkbox-row">
-                    <input type="checkbox" class="mui-checkbox-input group-type-checkbox" value="Fire Alarm" />
-                    <span class="mui-checkbox-box"></span>
-                    <span>Fire Alarm</span>
+                    <span>Select all</span>
                   </label>
                 </div>
+                <div id="group-category-list" class="multi-select-list" role="group" aria-label="Categories"></div>
               </div>
             </div>
           </div>
@@ -314,9 +408,9 @@
     </div>
 
     <div id="category-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
-      <aside id="category-drawer" class="category-drawer" aria-label="Add Type drawer">
+      <aside id="category-drawer" class="category-drawer" aria-label="Add Category drawer">
         <div class="drawer-header">
-          <h2>Add Type</h2>
+          <h2>Add Category</h2>
           <button id="close-category-drawer" class="icon-close-btn" aria-label="Close drawer">
             <span class="mui-icon">close</span>
           </button>
@@ -324,8 +418,8 @@
 
         <div class="drawer-body">
           <div class="mui-field">
-            <label class="mui-label" for="category-title-input">Type</label>
-            <input id="category-title-input" class="mui-outlined-input" type="text" placeholder="Enter type" />
+            <label class="mui-label" for="category-title-input">Category Name</label>
+            <input id="category-title-input" class="mui-outlined-input" type="text" placeholder="Enter category" />
           </div>
 
           <div class="mui-field">
@@ -334,12 +428,12 @@
               id="category-details-input"
               class="mui-outlined-input mui-textarea"
               rows="5"
-              placeholder="Add details"
+              placeholder="Enter details"
             ></textarea>
           </div>
 
           <div class="mui-field">
-            <label class="mui-label" for="priority-level-input">Priority Level</label>
+            <label class="mui-label" for="priority-level-input">Severity</label>
             <div class="mui-select-wrap">
               <select id="priority-level-input" class="mui-outlined-input mui-select">
                 <option value="1">Sev 1 (High Priority)</option>
@@ -352,17 +446,19 @@
             </div>
           </div>
 
-          <h3 class="rules-heading">Rules</h3>
-          <label class="rule-checkbox-row mui-checkbox-row">
-            <input type="checkbox" class="mui-checkbox-input" />
-            <span class="mui-checkbox-box"></span>
-            <span>Send report to client via email</span>
-          </label>
-          <label class="rule-checkbox-row mui-checkbox-row">
-            <input type="checkbox" class="mui-checkbox-input" />
-            <span class="mui-checkbox-box"></span>
-            <span>Send report to client with Daily Site Summary</span>
-          </label>
+          <div class="rules-section">
+            <h3 class="rules-heading">Rules</h3>
+            <label class="rule-checkbox-row mui-checkbox-row">
+              <input type="checkbox" class="mui-checkbox-input" />
+              <span class="mui-checkbox-box"></span>
+              <span>Send report to client with Daily Site Summary</span>
+            </label>
+            <label class="rule-checkbox-row mui-checkbox-row">
+              <input type="checkbox" class="mui-checkbox-input" />
+              <span class="mui-checkbox-box"></span>
+              <span>Send report immediately on submission</span>
+            </label>
+          </div>
         </div>
 
         <div class="drawer-footer">
@@ -372,9 +468,9 @@
       </aside>
     </div>
     <div id="type-detail-drawer-overlay" class="drawer-overlay is-hidden" aria-hidden="true">
-      <aside id="type-detail-drawer" class="category-drawer" aria-label="Type details drawer">
+      <aside id="type-detail-drawer" class="category-drawer" aria-label="Category details drawer">
         <div class="drawer-header">
-          <h2>Type Details</h2>
+          <h2>Category Details</h2>
           <button id="close-type-detail-drawer" class="icon-close-btn" aria-label="Close drawer">
             <span class="mui-icon">close</span>
           </button>
@@ -382,7 +478,7 @@
 
         <div class="drawer-body">
           <div class="mui-field">
-            <label class="mui-label">Type</label>
+            <label class="mui-label">Category Name</label>
             <div id="type-detail-name" class="detail-display" aria-readonly="true">-</div>
           </div>
 
@@ -392,7 +488,7 @@
           </div>
 
           <div class="mui-field">
-            <label class="mui-label">Priority Level</label>
+            <label class="mui-label">Severity</label>
             <div id="type-detail-priority" class="detail-display detail-display-inline" aria-readonly="true"></div>
           </div>
 
@@ -414,6 +510,8 @@
       const typesTable = document.getElementById("types-table");
       const primaryCta = document.getElementById("primary-cta");
       const primaryCtaLabel = document.getElementById("primary-cta-label");
+      const addGroupCtaWrap = document.getElementById("add-group-cta-wrap");
+      const addGroupCta = document.getElementById("add-group-cta");
       const franchiseFilterBtn = document.getElementById("franchise-filter-btn");
       const groupDrawerOverlay = document.getElementById("group-drawer-overlay");
       const groupDrawer = document.getElementById("group-drawer");
@@ -421,10 +519,12 @@
       const cancelGroupDrawerBtn = document.getElementById("cancel-group-drawer");
       const saveGroupDrawerBtn = document.getElementById("save-group-drawer");
       const groupNameInput = document.getElementById("group-name-input");
-      const groupTypeTrigger = document.getElementById("group-type-trigger");
-      const groupTypeValue = document.getElementById("group-type-value");
-      const groupTypeMenu = document.getElementById("group-type-menu");
-      const groupTypeList = document.getElementById("group-type-list");
+      const groupCategoryTrigger = document.getElementById("group-category-trigger");
+      const groupCategoryValue = document.getElementById("group-category-value");
+      const groupCategoryMenu = document.getElementById("group-category-menu");
+      const groupCategoryList = document.getElementById("group-category-list");
+      const groupCategorySearch = document.getElementById("group-category-search");
+      const groupCategorySelectAll = document.getElementById("group-category-select-all");
       const categoryDrawerOverlay = document.getElementById("category-drawer-overlay");
       const categoryDrawer = document.getElementById("category-drawer");
       const closeCategoryDrawerBtn = document.getElementById("close-category-drawer");
@@ -450,19 +550,24 @@
       let currentView = "templates";
 
       function openGroupDrawer() {
+        populateGroupCategoryOptions();
         groupDrawerOverlay.classList.remove("is-hidden");
         groupDrawerOverlay.setAttribute("aria-hidden", "false");
+        groupNameInput.focus();
+      }
+
+      function closeGroupCategoryMenu() {
+        groupCategoryMenu.classList.add("is-hidden");
+        groupCategoryTrigger.setAttribute("aria-expanded", "false");
+        groupCategorySearch.setAttribute("aria-expanded", "false");
+        groupCategorySearch.value = "";
+        filterGroupCategoryOptions("");
       }
 
       function closeGroupDrawer() {
+        closeGroupCategoryMenu();
         groupDrawerOverlay.classList.add("is-hidden");
         groupDrawerOverlay.setAttribute("aria-hidden", "true");
-        closeGroupTypeMenu();
-      }
-
-      function closeGroupTypeMenu() {
-        groupTypeMenu.classList.add("is-hidden");
-        groupTypeTrigger.setAttribute("aria-expanded", "false");
       }
 
       function openCategoryDrawer() {
@@ -500,11 +605,9 @@
         groupsTable.classList.toggle("is-hidden", !showGroups);
         typesTable.classList.toggle("is-hidden", !showTypes);
         franchiseFilterBtn.classList.toggle("is-hidden", showGroups || showTypes);
-        primaryCtaLabel.textContent = showGroups
-          ? "Add Group"
-          : showTypes
-            ? "Add Type"
-            : "Add Report Template";
+        primaryCta.classList.toggle("is-hidden", showGroups);
+        addGroupCtaWrap.classList.toggle("is-hidden", !showGroups);
+        primaryCtaLabel.textContent = showTypes ? "Add Category" : "Add Report Template";
       }
 
       toggleTabs.forEach((tab) => {
@@ -518,8 +621,6 @@
       primaryCta.addEventListener("click", () => {
         if (currentView === "templates") {
           window.location.href = "./edit-report.html";
-        } else if (currentView === "groups") {
-          openGroupDrawer();
         } else if (currentView === "types") {
           openCategoryDrawer();
         }
@@ -531,11 +632,6 @@
         if (!groupDrawer.contains(event.target)) {
           closeGroupDrawer();
         }
-      });
-      groupTypeTrigger.addEventListener("click", () => {
-        const willOpen = groupTypeMenu.classList.contains("is-hidden");
-        groupTypeMenu.classList.toggle("is-hidden", !willOpen);
-        groupTypeTrigger.setAttribute("aria-expanded", String(willOpen));
       });
 
       closeCategoryDrawerBtn.addEventListener("click", closeCategoryDrawer);
@@ -565,10 +661,6 @@
           .replace(/>/g, "&gt;")
           .replace(/\"/g, "&quot;")
           .replace(/'/g, "&#39;");
-      }
-
-      function createTypeBadgeMarkup(typeLabel) {
-        return `<span class="type-badge">${escapeHtml(typeLabel)}</span>`;
       }
 
       function getSelectedRuleLabels() {
@@ -603,92 +695,162 @@
         openTypeDetailDrawer();
       }
 
-      function getTypeLabels() {
+      const GROUP_CATEGORY_CHIP_LIMIT = 8;
+
+      function parseGroupCategories(value) {
+        return String(value || "")
+          .split("||")
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function createCategoryChipMarkup(label) {
+        return `<span class="category-chip">${escapeHtml(label)}</span>`;
+      }
+
+      function createGroupCategoriesCellMarkup(categories) {
+        if (!categories.length) {
+          return '<span class="detail-empty">No categories</span>';
+        }
+
+        const visible = categories.slice(0, GROUP_CATEGORY_CHIP_LIMIT);
+        const overflow = categories.slice(GROUP_CATEGORY_CHIP_LIMIT);
+        const overflowMarkup = overflow.length
+          ? `
+            <span class="category-chip category-chip-overflow" tabindex="0" aria-label="${overflow.length} more categories">
+              +${overflow.length}
+              <span class="category-chip-tooltip" role="tooltip">
+                ${overflow.map((label) => `<span class="category-chip">${escapeHtml(label)}</span>`).join("")}
+              </span>
+            </span>
+          `
+          : "";
+
+        return `
+          <div class="category-chip-list">
+            <div class="category-chip-list-visible">
+              ${visible.map((label) => createCategoryChipMarkup(label)).join("")}
+            </div>
+            ${overflowMarkup}
+          </div>
+        `;
+      }
+
+      function renderGroupCategoriesCell(row) {
+        const cell = row.querySelector(".group-categories-cell");
+        if (!cell) {
+          return;
+        }
+        cell.innerHTML = createGroupCategoriesCellMarkup(parseGroupCategories(row.dataset.categories));
+      }
+
+      function renderAllGroupCategoryCells() {
+        groupsTableBody.querySelectorAll("tr[data-group-name]").forEach((row) => {
+          renderGroupCategoriesCell(row);
+        });
+      }
+
+      function getCategoryLabels() {
         return Array.from(typesTableBody.querySelectorAll("tr td:first-child"))
           .map((cell) => cell.textContent.trim())
           .filter(Boolean);
       }
 
-      function getSelectedGroupTypes() {
-        return Array.from(groupTypeList.querySelectorAll(".group-type-checkbox:checked")).map(
+      function getSelectedGroupCategories() {
+        return Array.from(groupCategoryList.querySelectorAll(".group-category-checkbox:checked")).map(
           (input) => input.value,
         );
       }
 
-      function syncGroupTypeTrigger() {
-        const selectedTypes = getSelectedGroupTypes();
-        if (!selectedTypes.length) {
-          groupTypeValue.innerHTML = '<span class="multi-select-placeholder">Select type</span>';
+      function getVisibleGroupCategoryCheckboxes() {
+        return Array.from(groupCategoryList.querySelectorAll(".multi-select-option:not(.is-hidden) .group-category-checkbox"));
+      }
+
+      function syncGroupCategorySelectAll() {
+        const visibleCheckboxes = getVisibleGroupCategoryCheckboxes();
+        if (!visibleCheckboxes.length) {
+          groupCategorySelectAll.checked = false;
+          groupCategorySelectAll.indeterminate = false;
           return;
         }
 
-        groupTypeValue.innerHTML = `
-          <span class="multi-select-chip-list">
-            ${selectedTypes.map((typeLabel) => `<span class="multi-select-chip">${escapeHtml(typeLabel)}</span>`).join("")}
-          </span>
-        `;
+        const checkedCount = visibleCheckboxes.filter((input) => input.checked).length;
+        groupCategorySelectAll.checked = checkedCount === visibleCheckboxes.length;
+        groupCategorySelectAll.indeterminate = checkedCount > 0 && checkedCount < visibleCheckboxes.length;
       }
 
-      function populateGroupTypeOptions(preferredTypes) {
-        const typeLabels = getTypeLabels();
-        const selectedTypes = Array.isArray(preferredTypes)
-          ? preferredTypes
-          : preferredTypes
-            ? [preferredTypes]
-            : [];
-        groupTypeList.replaceChildren();
+      function syncGroupCategoryTrigger() {
+        const selected = getSelectedGroupCategories();
+        if (!selected.length) {
+          groupCategoryValue.innerHTML = "";
+          groupCategorySearch.placeholder = "Select category";
+        } else {
+          groupCategoryValue.innerHTML = `
+            <span class="multi-select-chip-list">
+              ${selected.map((label) => `<span class="multi-select-chip">${escapeHtml(label)}</span>`).join("")}
+            </span>
+          `;
+          groupCategorySearch.placeholder = "Search categories";
+        }
+        syncGroupCategorySelectAll();
+      }
 
-        typeLabels.forEach((typeLabel, index) => {
+      function filterGroupCategoryOptions(query) {
+        const normalized = query.trim().toLowerCase();
+        groupCategoryList.querySelectorAll(".multi-select-option").forEach((option) => {
+          const label = option.querySelector("span:last-child")?.textContent.trim().toLowerCase() || "";
+          option.classList.toggle("is-hidden", Boolean(normalized) && !label.includes(normalized));
+        });
+        syncGroupCategorySelectAll();
+      }
+
+      function populateGroupCategoryOptions(preferredCategories = []) {
+        const selectedCategories = Array.isArray(preferredCategories) ? preferredCategories : [];
+        groupCategoryList.replaceChildren();
+
+        getCategoryLabels().forEach((label) => {
           const optionLabel = document.createElement("label");
           optionLabel.className = "multi-select-option mui-checkbox-row";
 
           const input = document.createElement("input");
           input.type = "checkbox";
-          input.className = "mui-checkbox-input group-type-checkbox";
-          input.value = typeLabel;
-          input.checked = selectedTypes.length ? selectedTypes.includes(typeLabel) : index === 0;
-          input.addEventListener("change", syncGroupTypeTrigger);
+          input.className = "mui-checkbox-input group-category-checkbox";
+          input.value = label;
+          input.checked = selectedCategories.includes(label);
+          input.addEventListener("change", syncGroupCategoryTrigger);
 
           const checkboxBox = document.createElement("span");
           checkboxBox.className = "mui-checkbox-box";
 
           const text = document.createElement("span");
-          text.textContent = typeLabel;
+          text.textContent = label;
 
           optionLabel.append(input, checkboxBox, text);
-          groupTypeList.appendChild(optionLabel);
+          groupCategoryList.appendChild(optionLabel);
         });
 
-        syncGroupTypeTrigger();
+        filterGroupCategoryOptions(groupCategorySearch.value);
+        syncGroupCategoryTrigger();
       }
 
-      function upsertGroupListing(groupLabel, typeLabel) {
-        const existingRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
-          (row) => row.dataset.groupName === groupLabel,
-        );
+      function openGroupCategoryMenu() {
+        populateGroupCategoryOptions(getSelectedGroupCategories());
+        groupCategoryMenu.classList.remove("is-hidden");
+        groupCategoryTrigger.setAttribute("aria-expanded", "true");
+        groupCategorySearch.setAttribute("aria-expanded", "true");
+      }
 
-        if (existingRow) {
-          const badgeList = existingRow.querySelector(".type-badge-list");
-          const existingType = Array.from(badgeList.querySelectorAll(".type-badge")).some(
-            (badge) => badge.textContent.trim().toLowerCase() === typeLabel.toLowerCase(),
-          );
-          if (!existingType) {
-            badgeList.insertAdjacentHTML("beforeend", createTypeBadgeMarkup(typeLabel));
-          }
-          return;
-        }
-
+      function createSavedGroupRow(groupLabel, categories = []) {
         const row = document.createElement("tr");
         row.dataset.groupName = groupLabel;
+        row.dataset.categories = categories.join("||");
         row.innerHTML = `
           <td>${escapeHtml(groupLabel)}</td>
-          <td>
-            <div class="type-badge-list">
-              ${createTypeBadgeMarkup(typeLabel)}
-            </div>
-          </td>
+          <td class="group-categories-cell">${createGroupCategoriesCellMarkup(categories)}</td>
+          <td>Aleena</td>
+          ${createActionsCellMarkup()}
         `;
-        groupsTableBody.appendChild(row);
+        return row;
       }
 
       function createActionsCellMarkup() {
@@ -704,6 +866,48 @@
         `;
       }
 
+      groupCategoryTrigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (groupCategoryMenu.classList.contains("is-hidden")) {
+          openGroupCategoryMenu();
+        }
+        groupCategorySearch.focus();
+      });
+
+      groupCategorySearch.addEventListener("focus", (event) => {
+        event.stopPropagation();
+        if (groupCategoryMenu.classList.contains("is-hidden")) {
+          openGroupCategoryMenu();
+        }
+      });
+
+      groupCategorySearch.addEventListener("input", () => {
+        if (groupCategoryMenu.classList.contains("is-hidden")) {
+          openGroupCategoryMenu();
+        }
+        filterGroupCategoryOptions(groupCategorySearch.value);
+      });
+
+      groupCategorySearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeGroupCategoryMenu();
+          groupCategorySearch.blur();
+        }
+      });
+
+      groupCategorySelectAll.addEventListener("change", () => {
+        const shouldSelectAll = groupCategorySelectAll.checked;
+        getVisibleGroupCategoryCheckboxes().forEach((input) => {
+          input.checked = shouldSelectAll;
+        });
+        syncGroupCategoryTrigger();
+      });
+
+      groupCategoryMenu.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+
       saveGroupDrawerBtn.addEventListener("click", () => {
         const groupName = groupNameInput.value.trim();
         if (!groupName) {
@@ -711,20 +915,25 @@
           return;
         }
 
-        const selectedTypeLabels = getSelectedGroupTypes();
-        if (!selectedTypeLabels.length) {
-          groupTypeTrigger.focus();
+        const selectedCategories = getSelectedGroupCategories();
+        if (!selectedCategories.length) {
+          groupCategorySearch.focus();
           return;
         }
 
-        selectedTypeLabels.forEach((typeLabel) => {
-          upsertGroupListing(groupName, typeLabel);
-        });
+        const existingRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
+          (row) => row.dataset.groupName === groupName,
+        );
+        if (!existingRow) {
+          groupsTableBody.appendChild(createSavedGroupRow(groupName, selectedCategories));
+        }
         groupNameInput.value = "";
-        populateGroupTypeOptions();
-        closeGroupTypeMenu();
+        populateGroupCategoryOptions();
         closeGroupDrawer();
       });
+
+      addGroupCta.addEventListener("click", openGroupDrawer);
+      renderAllGroupCategoryCells();
 
       saveCategoryDrawerBtn.addEventListener("click", () => {
         const title = typeTitleInput.value.trim();
@@ -746,7 +955,6 @@
           ${createActionsCellMarkup()}
         `;
         typesTableBody.appendChild(row);
-        populateGroupTypeOptions(title);
 
         typeTitleInput.value = "";
         typeDetailsInput.value = "";
@@ -756,8 +964,6 @@
         });
         closeCategoryDrawer();
       });
-
-      populateGroupTypeOptions();
 
       typesTableBody.addEventListener("click", (event) => {
         if (event.target.closest(".row-menu-wrapper")) {
@@ -788,10 +994,6 @@
           return;
         }
 
-        if (!groupTypeTrigger.contains(event.target) && !groupTypeMenu.contains(event.target)) {
-          closeGroupTypeMenu();
-        }
-
         const rowActionItem = event.target.closest(".row-action-item");
         if (rowActionItem) {
           event.stopPropagation();
@@ -804,6 +1006,9 @@
         }
 
         closeAllRowMenus();
+        if (!event.target.closest(".multi-select-combobox")) {
+          closeGroupCategoryMenu();
+        }
       });
     </script>
   </body>
