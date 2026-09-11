@@ -445,20 +445,6 @@
               <span class="mui-icon mui-select-icon">expand_more</span>
             </div>
           </div>
-
-          <div class="rules-section">
-            <h3 class="rules-heading">Rules</h3>
-            <label class="rule-checkbox-row mui-checkbox-row">
-              <input type="checkbox" class="mui-checkbox-input" />
-              <span class="mui-checkbox-box"></span>
-              <span>Send report to client with Daily Site Summary</span>
-            </label>
-            <label class="rule-checkbox-row mui-checkbox-row">
-              <input type="checkbox" class="mui-checkbox-input" />
-              <span class="mui-checkbox-box"></span>
-              <span>Send report immediately on submission</span>
-            </label>
-          </div>
         </div>
 
         <div class="drawer-footer">
@@ -544,9 +530,6 @@
       const typeTitleInput = document.getElementById("category-title-input");
       const typeDetailsInput = document.getElementById("category-details-input");
       const priorityLevelInput = document.getElementById("priority-level-input");
-      const typeRuleInputs = Array.from(
-        categoryDrawer.querySelectorAll(".rule-checkbox-row .mui-checkbox-input"),
-      );
       let currentView = "templates";
 
       function openGroupDrawer() {
@@ -661,12 +644,6 @@
           .replace(/>/g, "&gt;")
           .replace(/\"/g, "&quot;")
           .replace(/'/g, "&#39;");
-      }
-
-      function getSelectedRuleLabels() {
-        return typeRuleInputs
-          .filter((input) => input.checked)
-          .map((input) => input.parentElement.querySelector("span:last-child").textContent.trim());
       }
 
       function createDetailRuleMarkup(ruleLabel) {
@@ -945,9 +922,7 @@
         const details = typeDetailsInput.value.trim() || "No details added";
         const priority = priorityLevelInput.value;
         const severity = getSeverityFromPriority(priority);
-        const selectedRules = getSelectedRuleLabels();
         const row = document.createElement("tr");
-        row.dataset.rules = selectedRules.join("||");
         row.innerHTML = `
           <td>${escapeHtml(title)}</td>
           <td>${escapeHtml(details)}</td>
@@ -959,9 +934,6 @@
         typeTitleInput.value = "";
         typeDetailsInput.value = "";
         priorityLevelInput.value = "3";
-        typeRuleInputs.forEach((input) => {
-          input.checked = false;
-        });
         closeCategoryDrawer();
       });
 
