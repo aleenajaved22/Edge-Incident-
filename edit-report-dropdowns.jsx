@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Box, FormControl, MenuItem, Select } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -18,7 +18,7 @@ const answerTypeOptions = [
   "Signature",
 ];
 
-const reportTypeOptions = ["Tour Report"];
+const reportTypeOptions = ["Tour Report", "Incident Report"];
 
 // Mirrors groups defined in the Settings > Groups tab.
 const groupOptions = ["Walmart", "Mega Saver"];
@@ -105,16 +105,37 @@ function DropdownField({ label, value, onChange, options, required = false }) {
 
 function ReportTypeField() {
   const [reportType, setReportType] = useState(reportTypeOptions[0]);
+  const [group, setGroup] = useState(groupOptions[0] ?? "");
+  const isIncidentReport = reportType === "Incident Report";
+
+  useEffect(() => {
+    const incidentCard = document.getElementById("incident-report-card");
+    if (!incidentCard) {
+      return;
+    }
+    incidentCard.classList.toggle("is-hidden", isIncidentReport);
+  }, [isIncidentReport]);
 
   return (
     <ThemeProvider theme={theme}>
-      <DropdownField
-        label="Report Type"
-        value={reportType}
-        onChange={setReportType}
-        options={reportTypeOptions}
-        required
-      />
+      <div className={isIncidentReport ? "report-dropdowns-row" : undefined}>
+        <DropdownField
+          label="Report Type"
+          value={reportType}
+          onChange={setReportType}
+          options={reportTypeOptions}
+          required
+        />
+        {isIncidentReport && (
+          <DropdownField
+            label="Group"
+            value={group}
+            onChange={setGroup}
+            options={groupOptions}
+            required
+          />
+        )}
+      </div>
     </ThemeProvider>
   );
 }
