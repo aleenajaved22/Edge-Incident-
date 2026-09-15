@@ -512,6 +512,65 @@ body {
   background: var(--surface-white);
 }
 
+.btn-danger-outline:hover {
+  background: #fff5f4;
+}
+
+.btn-danger {
+  border: 1px solid #df372b;
+  background: #df372b;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #c42f24;
+  border-color: #c42f24;
+}
+
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(38, 37, 39, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.confirm-dialog-overlay.is-hidden {
+  display: none;
+}
+
+.confirm-dialog {
+  width: min(420px, calc(100vw - 32px));
+  background: var(--surface-white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.16);
+  padding: 24px;
+}
+
+.confirm-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.confirm-dialog p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-secondary-1);
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
 .table-card {
   background: var(--surface-white);
   border-top: 1px solid var(--border-subtle-1);
@@ -842,6 +901,26 @@ tbody td:nth-child(3) {
   z-index: 6;
 }
 
+#types-table th,
+#types-table td {
+  overflow: hidden;
+}
+
+#types-table td.actions-cell {
+  overflow: visible;
+  position: relative;
+  z-index: 0;
+}
+
+#types-table td.actions-cell:hover,
+#types-table td.actions-cell:focus-within {
+  z-index: 5;
+}
+
+#types-table td.actions-cell:has(.row-action-menu:not(.is-hidden)) {
+  z-index: 6;
+}
+
 #groups-table th:nth-child(1),
 #groups-table td:nth-child(1) {
   width: 170px;
@@ -1034,6 +1113,14 @@ tbody td:nth-child(3) {
 
 .row-action-item:hover {
   background: #f7f7f8;
+}
+
+.row-action-item--danger {
+  color: #b32318;
+}
+
+.row-action-item--danger:hover {
+  background: #fff5f4;
 }
 
 .pagination {
