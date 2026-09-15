@@ -114,9 +114,9 @@ function IncidentEnableCheckbox({ enabled, onChange }) {
       />
       <span className="mui-checkbox-box"></span>
       <span className="incident-enable-copy">
-        <span className="incident-enable-title">Incident Report</span>
+        <span className="incident-enable-title">Incident Report Section</span>
         <span className="incident-enable-subtitle">
-          Enable to include incident report in this report
+          Enable to include incident section in this report
         </span>
       </span>
     </label>
