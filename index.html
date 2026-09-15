@@ -125,7 +125,12 @@
               <table id="templates-table">
                 <thead>
                   <tr>
-                    <th>Report <span class="mui-icon">arrow_downward</span></th>
+                    <th aria-sort="ascending">
+                      <button type="button" id="templates-report-sort" class="table-sort-btn" aria-label="Sort by report name">
+                        Report
+                        <span class="mui-icon table-sort-icon" aria-hidden="true">arrow_upward</span>
+                      </button>
+                    </th>
                     <th>Created On <span class="mui-icon">arrow_downward</span></th>
                     <th>Template Type</th>
                   </tr>
@@ -145,13 +150,31 @@
               <table id="groups-table" class="is-hidden">
                 <thead>
                   <tr>
-                    <th>Group Name</th>
+                    <th aria-sort="ascending">
+                      <button type="button" id="groups-name-sort" class="table-sort-btn" aria-label="Sort by group name">
+                        Group Name
+                        <span class="mui-icon table-sort-icon" aria-hidden="true">arrow_upward</span>
+                      </button>
+                    </th>
                     <th>Categories</th>
                     <th>Created by</th>
                     <th class="actions-header"></th>
                   </tr>
                 </thead>
                 <tbody>
+                  <tr data-group-name="Mega Saver" data-categories="Trespassing||Daily Activity">
+                    <td>Mega Saver</td>
+                    <td class="group-categories-cell"></td>
+                    <td>John Agar</td>
+                    <td class="actions-cell">
+                      <div class="row-menu-wrapper">
+                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
+                        <div class="row-action-menu is-hidden">
+                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
                   <tr
                     data-group-name="Walmart"
                     data-categories="Trespassing||Intruder Alarm||Fire Alarm||Daily Activity||Phone Check||Gate Access||Parking Lot||Camera Check||Lobby Sweep||Loading Dock"
@@ -168,27 +191,24 @@
                       </div>
                     </td>
                   </tr>
-                  <tr data-group-name="Mega Saver" data-categories="Trespassing||Daily Activity">
-                    <td>Mega Saver</td>
-                    <td class="group-categories-cell"></td>
-                    <td>John Agar</td>
-                    <td class="actions-cell">
-                      <div class="row-menu-wrapper">
-                        <button class="row-menu-btn" aria-label="More options"><span class="mui-icon">more_vert</span></button>
-                        <div class="row-action-menu is-hidden">
-                          <button class="row-action-item"><span class="mui-icon">edit</span> Edit</button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <table id="types-table" class="is-hidden">
                 <thead>
                   <tr>
-                    <th>Category Name</th>
+                    <th aria-sort="ascending">
+                      <button type="button" id="types-name-sort" class="table-sort-btn" aria-label="Sort by category name">
+                        Category Name
+                        <span class="mui-icon table-sort-icon" aria-hidden="true">arrow_upward</span>
+                      </button>
+                    </th>
                     <th>Details</th>
-                    <th>Priority</th>
+                    <th>
+                      <button type="button" id="types-severity-sort" class="table-sort-btn" aria-label="Sort by severity">
+                        Severity
+                        <span class="mui-icon table-sort-icon" aria-hidden="true">unfold_more</span>
+                      </button>
+                    </th>
                     <th class="actions-header"></th>
                   </tr>
                 </thead>
@@ -527,13 +547,33 @@
       const floatingFoViewBtn = document.querySelector(".floating-ghost-btn");
       const groupsTableBody = document.querySelector("#groups-table tbody");
       const typesTableBody = document.querySelector("#types-table tbody");
+      const templatesTableBody = templatesTable?.querySelector("tbody");
       const typeTitleInput = document.getElementById("category-title-input");
       const typeDetailsInput = document.getElementById("category-details-input");
       const priorityLevelInput = document.getElementById("priority-level-input");
       let currentView = "templates";
+      let editingGroupRow = null;
+      let editingCategoryRow = null;
+      const groupDrawerTitle = groupDrawer.querySelector(".drawer-header h2");
+      const categoryDrawerTitle = categoryDrawer.querySelector(".drawer-header h2");
 
-      function openGroupDrawer() {
-        populateGroupCategoryOptions();
+      function openGroupDrawer(row = null) {
+        editingGroupRow = row;
+        if (row) {
+          const groupName = row.dataset.groupName || row.cells[0]?.textContent.trim() || "";
+          const categories = parseGroupCategories(row.dataset.categories);
+          groupDrawerTitle.textContent = "Edit Group";
+          groupDrawer.setAttribute("aria-label", "Edit Group drawer");
+          saveGroupDrawerBtn.textContent = "Update";
+          groupNameInput.value = groupName;
+          populateGroupCategoryOptions(categories);
+        } else {
+          groupDrawerTitle.textContent = "Add Group";
+          groupDrawer.setAttribute("aria-label", "Add Group drawer");
+          saveGroupDrawerBtn.textContent = "Save";
+          groupNameInput.value = "";
+          populateGroupCategoryOptions();
+        }
         groupDrawerOverlay.classList.remove("is-hidden");
         groupDrawerOverlay.setAttribute("aria-hidden", "false");
         groupNameInput.focus();
@@ -549,16 +589,50 @@
 
       function closeGroupDrawer() {
         closeGroupCategoryMenu();
+        editingGroupRow = null;
+        groupNameInput.value = "";
+        populateGroupCategoryOptions();
+        groupDrawerTitle.textContent = "Add Group";
+        groupDrawer.setAttribute("aria-label", "Add Group drawer");
+        saveGroupDrawerBtn.textContent = "Save";
         groupDrawerOverlay.classList.add("is-hidden");
         groupDrawerOverlay.setAttribute("aria-hidden", "true");
       }
 
-      function openCategoryDrawer() {
+      function openCategoryDrawer(row = null) {
+        editingCategoryRow = row;
+        if (row) {
+          const title = row.cells[0]?.textContent.trim() || "";
+          const details = row.cells[1]?.textContent.trim() || "";
+          const severityText = row.cells[2]?.textContent.trim() || "";
+          const severityMatch = severityText.match(/\d+/);
+          categoryDrawerTitle.textContent = "Edit Category";
+          categoryDrawer.setAttribute("aria-label", "Edit Category drawer");
+          saveCategoryDrawerBtn.textContent = "Update";
+          typeTitleInput.value = title;
+          typeDetailsInput.value = details === "No details added" ? "" : details;
+          priorityLevelInput.value = severityMatch ? severityMatch[0] : "3";
+        } else {
+          categoryDrawerTitle.textContent = "Add Category";
+          categoryDrawer.setAttribute("aria-label", "Add Category drawer");
+          saveCategoryDrawerBtn.textContent = "Save";
+          typeTitleInput.value = "";
+          typeDetailsInput.value = "";
+          priorityLevelInput.value = "3";
+        }
         categoryDrawerOverlay.classList.remove("is-hidden");
         categoryDrawerOverlay.setAttribute("aria-hidden", "false");
+        typeTitleInput.focus();
       }
 
       function closeCategoryDrawer() {
+        editingCategoryRow = null;
+        typeTitleInput.value = "";
+        typeDetailsInput.value = "";
+        priorityLevelInput.value = "3";
+        categoryDrawerTitle.textContent = "Add Category";
+        categoryDrawer.setAttribute("aria-label", "Add Category drawer");
+        saveCategoryDrawerBtn.textContent = "Save";
         categoryDrawerOverlay.classList.add("is-hidden");
         categoryDrawerOverlay.setAttribute("aria-hidden", "true");
       }
@@ -725,6 +799,134 @@
         groupsTableBody.querySelectorAll("tr[data-group-name]").forEach((row) => {
           renderGroupCategoriesCell(row);
         });
+      }
+
+      let groupNameSortDirection = "asc";
+      const groupsNameSortBtn = document.getElementById("groups-name-sort");
+
+      function syncGroupNameSortUi() {
+        const header = groupsNameSortBtn?.closest("th");
+        const icon = groupsNameSortBtn?.querySelector(".table-sort-icon");
+        if (header) {
+          header.setAttribute("aria-sort", groupNameSortDirection === "asc" ? "ascending" : "descending");
+        }
+        if (icon) {
+          icon.textContent = groupNameSortDirection === "asc" ? "arrow_upward" : "arrow_downward";
+        }
+        if (groupsNameSortBtn) {
+          groupsNameSortBtn.setAttribute(
+            "aria-label",
+            groupNameSortDirection === "asc"
+              ? "Sort by group name, currently A to Z"
+              : "Sort by group name, currently Z to A",
+          );
+        }
+      }
+
+      function sortGroupsByName() {
+        const rows = Array.from(groupsTableBody.querySelectorAll("tr"));
+        rows.sort((a, b) => {
+          const aName = (a.dataset.groupName || a.cells[0]?.textContent || "").trim();
+          const bName = (b.dataset.groupName || b.cells[0]?.textContent || "").trim();
+          const comparison = aName.localeCompare(bName, undefined, { sensitivity: "base" });
+          return groupNameSortDirection === "asc" ? comparison : -comparison;
+        });
+        rows.forEach((row) => groupsTableBody.appendChild(row));
+        syncGroupNameSortUi();
+      }
+
+      let templatesReportSortDirection = "asc";
+      const templatesReportSortBtn = document.getElementById("templates-report-sort");
+
+      function syncTemplatesReportSortUi() {
+        const header = templatesReportSortBtn?.closest("th");
+        const icon = templatesReportSortBtn?.querySelector(".table-sort-icon");
+        if (header) {
+          header.setAttribute(
+            "aria-sort",
+            templatesReportSortDirection === "asc" ? "ascending" : "descending",
+          );
+        }
+        if (icon) {
+          icon.textContent = templatesReportSortDirection === "asc" ? "arrow_upward" : "arrow_downward";
+        }
+      }
+
+      function sortTemplatesByReport() {
+        if (!templatesTableBody) {
+          return;
+        }
+        const rows = Array.from(templatesTableBody.querySelectorAll("tr"));
+        rows.sort((a, b) => {
+          const aName = (a.cells[0]?.textContent || "").trim();
+          const bName = (b.cells[0]?.textContent || "").trim();
+          const comparison = aName.localeCompare(bName, undefined, { sensitivity: "base" });
+          return templatesReportSortDirection === "asc" ? comparison : -comparison;
+        });
+        rows.forEach((row) => templatesTableBody.appendChild(row));
+        syncTemplatesReportSortUi();
+      }
+
+      let typesSortKey = "name";
+      let typesNameSortDirection = "asc";
+      let typesSeveritySortDirection = "asc";
+      const typesNameSortBtn = document.getElementById("types-name-sort");
+      const typesSeveritySortBtn = document.getElementById("types-severity-sort");
+
+      function getTypeSeverityValue(row) {
+        const text = (row.cells[2]?.textContent || "").trim();
+        const match = text.match(/\d+/);
+        return match ? Number(match[0]) : Number.POSITIVE_INFINITY;
+      }
+
+      function syncTypesSortUi() {
+        const nameHeader = typesNameSortBtn?.closest("th");
+        const severityHeader = typesSeveritySortBtn?.closest("th");
+        const nameIcon = typesNameSortBtn?.querySelector(".table-sort-icon");
+        const severityIcon = typesSeveritySortBtn?.querySelector(".table-sort-icon");
+
+        if (typesSortKey === "name") {
+          nameHeader?.setAttribute(
+            "aria-sort",
+            typesNameSortDirection === "asc" ? "ascending" : "descending",
+          );
+          severityHeader?.removeAttribute("aria-sort");
+          if (nameIcon) {
+            nameIcon.textContent = typesNameSortDirection === "asc" ? "arrow_upward" : "arrow_downward";
+          }
+          if (severityIcon) {
+            severityIcon.textContent = "unfold_more";
+          }
+        } else {
+          severityHeader?.setAttribute(
+            "aria-sort",
+            typesSeveritySortDirection === "asc" ? "ascending" : "descending",
+          );
+          nameHeader?.removeAttribute("aria-sort");
+          if (severityIcon) {
+            severityIcon.textContent =
+              typesSeveritySortDirection === "asc" ? "arrow_upward" : "arrow_downward";
+          }
+          if (nameIcon) {
+            nameIcon.textContent = "unfold_more";
+          }
+        }
+      }
+
+      function sortTypesTable() {
+        const rows = Array.from(typesTableBody.querySelectorAll("tr"));
+        rows.sort((a, b) => {
+          if (typesSortKey === "severity") {
+            const comparison = getTypeSeverityValue(a) - getTypeSeverityValue(b);
+            return typesSeveritySortDirection === "asc" ? comparison : -comparison;
+          }
+          const aName = (a.cells[0]?.textContent || "").trim();
+          const bName = (b.cells[0]?.textContent || "").trim();
+          const comparison = aName.localeCompare(bName, undefined, { sensitivity: "base" });
+          return typesNameSortDirection === "asc" ? comparison : -comparison;
+        });
+        rows.forEach((row) => typesTableBody.appendChild(row));
+        syncTypesSortUi();
       }
 
       function getCategoryLabels() {
@@ -898,19 +1100,65 @@
           return;
         }
 
-        const existingRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
-          (row) => row.dataset.groupName === groupName,
-        );
-        if (!existingRow) {
-          groupsTableBody.appendChild(createSavedGroupRow(groupName, selectedCategories));
+        if (editingGroupRow) {
+          const duplicateRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
+            (row) => row !== editingGroupRow && row.dataset.groupName === groupName,
+          );
+          if (duplicateRow) {
+            groupNameInput.focus();
+            return;
+          }
+
+          editingGroupRow.dataset.groupName = groupName;
+          editingGroupRow.dataset.categories = selectedCategories.join("||");
+          if (editingGroupRow.cells[0]) {
+            editingGroupRow.cells[0].textContent = groupName;
+          }
+          renderGroupCategoriesCell(editingGroupRow);
+          sortGroupsByName();
+        } else {
+          const existingRow = Array.from(groupsTableBody.querySelectorAll("tr")).find(
+            (row) => row.dataset.groupName === groupName,
+          );
+          if (!existingRow) {
+            groupsTableBody.appendChild(createSavedGroupRow(groupName, selectedCategories));
+            sortGroupsByName();
+          }
         }
-        groupNameInput.value = "";
-        populateGroupCategoryOptions();
         closeGroupDrawer();
       });
 
-      addGroupCta.addEventListener("click", openGroupDrawer);
+      addGroupCta.addEventListener("click", () => openGroupDrawer());
+      groupsNameSortBtn?.addEventListener("click", () => {
+        groupNameSortDirection = groupNameSortDirection === "asc" ? "desc" : "asc";
+        sortGroupsByName();
+      });
+      templatesReportSortBtn?.addEventListener("click", () => {
+        templatesReportSortDirection = templatesReportSortDirection === "asc" ? "desc" : "asc";
+        sortTemplatesByReport();
+      });
+      typesNameSortBtn?.addEventListener("click", () => {
+        if (typesSortKey === "name") {
+          typesNameSortDirection = typesNameSortDirection === "asc" ? "desc" : "asc";
+        } else {
+          typesSortKey = "name";
+          typesNameSortDirection = "asc";
+        }
+        sortTypesTable();
+      });
+      typesSeveritySortBtn?.addEventListener("click", () => {
+        if (typesSortKey === "severity") {
+          typesSeveritySortDirection = typesSeveritySortDirection === "asc" ? "desc" : "asc";
+        } else {
+          typesSortKey = "severity";
+          typesSeveritySortDirection = "asc";
+        }
+        sortTypesTable();
+      });
       renderAllGroupCategoryCells();
+      sortGroupsByName();
+      sortTemplatesByReport();
+      sortTypesTable();
 
       saveCategoryDrawerBtn.addEventListener("click", () => {
         const title = typeTitleInput.value.trim();
@@ -922,19 +1170,40 @@
         const details = typeDetailsInput.value.trim() || "No details added";
         const priority = priorityLevelInput.value;
         const severity = getSeverityFromPriority(priority);
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${escapeHtml(title)}</td>
-          <td>${escapeHtml(details)}</td>
-          <td><span class="sev-badge ${severity.className}">${severity.label}</span></td>
-          ${createActionsCellMarkup()}
-        `;
-        typesTableBody.appendChild(row);
 
-        typeTitleInput.value = "";
-        typeDetailsInput.value = "";
-        priorityLevelInput.value = "3";
+        if (editingCategoryRow) {
+          const duplicateRow = Array.from(typesTableBody.querySelectorAll("tr")).find(
+            (row) =>
+              row !== editingCategoryRow &&
+              (row.cells[0]?.textContent.trim() || "") === title,
+          );
+          if (duplicateRow) {
+            typeTitleInput.focus();
+            return;
+          }
+
+          if (editingCategoryRow.cells[0]) {
+            editingCategoryRow.cells[0].textContent = title;
+          }
+          if (editingCategoryRow.cells[1]) {
+            editingCategoryRow.cells[1].textContent = details;
+          }
+          if (editingCategoryRow.cells[2]) {
+            editingCategoryRow.cells[2].innerHTML = `<span class="sev-badge ${severity.className}">${severity.label}</span>`;
+          }
+        } else {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${escapeHtml(title)}</td>
+            <td>${escapeHtml(details)}</td>
+            <td><span class="sev-badge ${severity.className}">${severity.label}</span></td>
+            ${createActionsCellMarkup()}
+          `;
+          typesTableBody.appendChild(row);
+        }
+
         closeCategoryDrawer();
+        sortTypesTable();
       });
 
       typesTableBody.addEventListener("click", (event) => {
@@ -970,9 +1239,11 @@
         if (rowActionItem) {
           event.stopPropagation();
           const row = rowActionItem.closest("tr");
-          if (row && row.closest("#types-table")) {
-            closeAllRowMenus();
-            openTypeDetailsForRow(row);
+          closeAllRowMenus();
+          if (row && row.closest("#groups-table")) {
+            openGroupDrawer(row);
+          } else if (row && row.closest("#types-table")) {
+            openCategoryDrawer(row);
           }
           return;
         }

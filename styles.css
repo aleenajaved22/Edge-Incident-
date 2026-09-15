@@ -824,15 +824,22 @@ tbody td:nth-child(3) {
   overflow: hidden;
 }
 
-#groups-table td.group-categories-cell {
+#groups-table td.group-categories-cell,
+#groups-table td.actions-cell {
   overflow: visible;
   position: relative;
   z-index: 0;
 }
 
 #groups-table td.group-categories-cell:hover,
-#groups-table td.group-categories-cell:focus-within {
+#groups-table td.group-categories-cell:focus-within,
+#groups-table td.actions-cell:hover,
+#groups-table td.actions-cell:focus-within {
   z-index: 5;
+}
+
+#groups-table td.actions-cell:has(.row-action-menu:not(.is-hidden)) {
+  z-index: 6;
 }
 
 #groups-table th:nth-child(1),
@@ -921,6 +928,29 @@ tbody td:nth-child(3) {
   padding-bottom: 12px;
   line-height: 18px;
   box-sizing: border-box;
+}
+
+.table-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.table-sort-btn:hover {
+  color: var(--text-primary);
+}
+
+.table-sort-icon {
+  font-size: 16px;
+  color: var(--text-secondary-2);
 }
 
 #groups-table thead tr,
