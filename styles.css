@@ -1149,6 +1149,31 @@ tbody td:nth-child(3) {
   margin-top: 16px;
 }
 
+.incident-enable-row {
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+.incident-enable-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.incident-enable-title {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.incident-enable-subtitle {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--text-secondary-3);
+}
+
 .incident-answer-fields {
   margin-top: 16px;
   display: flex;
@@ -1203,6 +1228,7 @@ tbody td:nth-child(3) {
 
 .report-type-field-wrap .report-dropdowns-row {
   justify-content: flex-start;
+  align-items: center;
 }
 
 .report-type-field-wrap .report-dropdowns-row .report-type-dropdown {
@@ -1562,6 +1588,12 @@ tbody td:nth-child(3) {
   line-height: 18px;
   font-weight: 500;
   color: var(--text-secondary-3);
+}
+
+.mui-label.required::after {
+  content: "*";
+  color: #b32318;
+  margin-left: 1px;
 }
 
 .mui-outlined-input {
